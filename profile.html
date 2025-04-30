@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - Fake Twitter</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      width: 1200px;
+    }
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      border-right: 1px solid #333;
+      height: 100vh;
+    }
+    .sidebar .nav-link {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      padding: 12px 0;
+      cursor: pointer;
+    }
+    .sidebar i {
+      margin-right: 10px;
+    }
+    .main {
+      flex: 1;
+      padding: 20px;
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #ccc;
+      background-image: url('https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png');
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .profile-username {
+      color: #888;
+    }
+    .bio {
+      margin: 20px 0;
+    }
+    .tweet {
+      background-color: #111;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+    .tweet:hover {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <i class="fab fa-twitter fa-2x" style="color: #1DA1F2;"></i>
+      <div class="nav-link" onclick="location.href='home.html'"><i class="fas fa-home"></i> Home</div>
+      <div class="nav-link" onclick="location.href='explore.html'"><i class="fas fa-hashtag"></i> Explore</div>
+      <div class="nav-link" onclick="location.href='notifications.html'"><i class="far fa-bell"></i> Notifications</div>
+      <div class="nav-link" onclick="location.href='messages.html'"><i class="far fa-envelope"></i> Messages</div>
+      <div class="nav-link" onclick="location.href='profile.html'"><i class="far fa-user"></i> Profile</div>
+      <div class="nav-link" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i> More</div>
+      <div class="nav-link" onclick="location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Log out</div>
+    </div>
+
+    <div class="main">
+      <div class="profile-header">
+        <div class="avatar"></div>
+        <div>
+          <div class="profile-name">User</div>
+          <div class="profile-username">@you</div>
+        </div>
+      </div>
+      <div class="bio">
+        CS major at UC Merced. Organizer. Builder. Tweeter of things.
+      </div>
+
+      <h3>Your Tweets</h3>
+      <div class="tweet">Just got the new Travis Scott drop 😭🔥</div>
+      <div class="tweet">Can't believe the Warriors lost like that smh</div>
+      <div class="tweet">Tap in with EASA if you're East African at UCM 🇪🇹🇰🇪🇺🇬</div>
+    </div>
+  </div>
+</body>
+</html>

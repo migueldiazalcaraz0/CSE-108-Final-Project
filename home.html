@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Twitter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex;
+      width: 1200px;
+    }
+
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      border-right: 1px solid #333;
+      height: 100vh;
+    }
+
+    .sidebar i {
+      margin-right: 10px;
+    }
+
+    .sidebar .nav-link {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      padding: 12px 0;
+      cursor: pointer;
+    }
+
+    .feed {
+      width: 600px;
+      padding: 20px;
+      border-right: 1px solid #333;
+      min-height: 100vh;
+    }
+
+    .tweet-box {
+      background-color: #111;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tweet-box textarea {
+      width: 100%;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 16px;
+      resize: none;
+      border: none;
+      background: #000;
+      color: white;
+    }
+
+    .tweet-box button {
+      margin-top: 10px;
+      background-color: #1DA1F2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tweet {
+      display: flex;
+      gap: 15px;
+      background-color: #111;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      transition: background 0.2s;
+    }
+
+    .tweet:hover {
+      background-color: #222;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: #ccc;
+      flex-shrink: 0;
+      background-image: url('https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .tweet-content {
+      flex: 1;
+    }
+
+    .tweet-content .name {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .tweet-content .username {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .tweet-content .time {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .delete-btn {
+      background: #ff4444;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .rightbar {
+      flex: 1;
+      padding: 20px;
+      max-width: 300px;
+    }
+
+    .widget {
+      background-color: #111;
+      border-radius: 15px;
+      padding: 15px;
+    }
+
+    .widget h4 {
+      margin-bottom: 10px;
+    }
+
+    .widget p {
+      color: #ccc;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <i class="fab fa-twitter fa-2x" style="color: #1DA1F2;"></i>
+      <div class="nav-link" onclick="location.href='home.html'"><i class="fas fa-home"></i> Home</div>
+      <div class="nav-link" onclick="location.href='explore.html'"><i class="fas fa-hashtag"></i> Explore</div>
+      <div class="nav-link" onclick="location.href='notifications.html'"><i class="far fa-bell"></i> Notifications</div>
+      <div class="nav-link" onclick="location.href='messages.html'"><i class="far fa-envelope"></i> Messages</div>
+      <div class="nav-link" onclick="location.href='profile.html'"><i class="far fa-user"></i> Profile</div>
+      <div class="nav-link" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i> More</div>
+      <div class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log out</div>
+    </div>
+
+    <div class="feed">
+      <h2>Home</h2>
+      <div class="tweet-box">
+        <textarea id="tweetInput" rows="3" placeholder="What's happening?"></textarea>
+        <button onclick="postTweet()">Post</button>
+      </div>
+      <div id="feedContainer"></div>
+    </div>
+
+    <div class="rightbar">
+      <h3>Welcome to Fake Twitter</h3>
+      <div class="username" id="userInfo"></div>
+      <div class="widget" style="margin-top: 40px;">
+        <h4>What’s happening</h4>
+        <p><strong>#Playboi Carti</strong> — 8,500+ posts</p>
+        <p><strong>#NBA</strong> — Trending</p>
+        <p><strong>#AI Tools</strong> — Tech</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function postTweet() {
+      const input = document.getElementById("tweetInput");
+      const content = input.value.trim();
+      if (!content) return;
+
+      let tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
+      tweets.unshift({ text: content, time: new Date().toLocaleString() });
+      localStorage.setItem("tweets", JSON.stringify(tweets));
+      input.value = "";
+      showTweets();
+    }
+
+    function showTweets() {
+      const container = document.getElementById("feedContainer");
+      const tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
+
+      container.innerHTML = tweets.map((t, index) => `
+        <div class="tweet">
+          <div class="avatar"></div>
+          <div class="tweet-content">
+            <div><span class="name">User</span> <span class="username">@you</span></div>
+            <div class="time">${t.time}</div>
+            <p>${t.text}</p>
+            <button class="delete-btn" onclick="deleteTweet(${index})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function deleteTweet(index) {
+      let tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
+      tweets.splice(index, 1);
+      localStorage.setItem("tweets", JSON.stringify(tweets));
+      showTweets();
+    }
+
+    function showUser() {
+      const user = localStorage.getItem("username") || "Anonymous";
+      const method = localStorage.getItem("loginMethod") || "guest";
+      document.getElementById("userInfo").innerText = `${user} (signed in via ${method})`;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    window.onload = () => {
+      showTweets();
+      showUser();
+    };
+  </script>
+</body>
+</html>

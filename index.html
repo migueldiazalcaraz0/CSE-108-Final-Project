@@ -1,113 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitter Clone</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        .hero-section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-        .twitter-logo {
-            font-size: 2.5rem;
-            color: #1DA1F2;
-        }
-        .hero-text {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 2rem 0;
-        }
-        .hero-subtext {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-        }
-        .signup-form {
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 1rem;
-            color: #000;
-        }
-        .btn-twitter {
-            background-color: #1DA1F2;
-            color: white;
-            border-radius: 2rem;
-            padding: 0.5rem 1.5rem;
-            font-weight: bold;
-        }
-        .btn-twitter:hover {
-            background-color: #1a8cd8;
-            color: white;
-        }
-        .btn-outline-twitter {
-            border: 1px solid #1DA1F2;
-            color: #1DA1F2;
-            border-radius: 2rem;
-            padding: 0.5rem 1.5rem;
-            font-weight: bold;
-        }
-        .btn-outline-twitter:hover {
-            background-color: #1a8cd8;
-            color: white;
-        }
-        .form-control {
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-        }
-        .terms {
-            font-size: 0.8rem;
-            color: #536471;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in to Twitter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      padding: 0 10%;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo i {
+      font-size: 10rem;
+      color: #1DA1F2;
+    }
+
+    .content {
+      max-width: 400px;
+      background-color: #111;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #111;
+    }
+
+    .content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      margin-top: 10px;
+    }
+
+    .btn-google, .btn-apple {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .btn-login {
+      background-color: #1DA1F2;
+      color: #fff;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1rem 0;
+      color: #555;
+    }
+
+    .bottom-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    a {
+      color: #1DA1F2;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 800px) {
+      body {
+        flex-direction: column;
+        padding: 2rem;
+      }
+
+      .logo i {
+        font-size: 6rem;
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row hero-section">
-            <div class="col-md-6">
-                <i class="fab fa-twitter twitter-logo"></i>
-                <h1 class="hero-text">Happening now</h1>
-                <h2 class="hero-subtext">Join today.</h2>
-            </div>
-            <div class="col-md-6">
-                <div class="signup-form">
-                    <h3 class="mb-4">Sign in to Twitter</h3>
-                    <form>
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-twitter w-100 mb-3">Sign in</button>
-                        <div class="text-center mb-3">
-                            <span>or</span>
-                        </div>
-                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
-                            <i class="fab fa-google me-2"></i>Sign in with Google
-                        </button>
-                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
-                            <i class="fab fa-apple me-2"></i>Sign in with Apple
-                        </button>
-                        <div class="text-center">
-                            <a href="#" class="text-decoration-none">Forgot password?</a>
-                        </div>
-                    </form>
-                    <div class="mt-4">
-                        <p class="mb-0">Don't have an account? <a href="#" class="text-decoration-none">Sign up</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="logo">
+    <i class="fab fa-twitter"></i>
+  </div>
+
+  <div class="content">
+    <h1>Happening now</h1>
+    <p>Join today.</p>
+
+    <button class="btn btn-google" onclick="fakeLogin('Google')">
+      <i class="fab fa-google"></i> Sign up with Google
+    </button>
+
+    <button class="btn btn-apple" onclick="fakeLogin('Apple')">
+      <i class="fab fa-apple"></i> Sign up with Apple
+    </button>
+
+    <div class="divider">OR</div>
+
+    <input id="email" type="text" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn btn-login" onclick="fakeLogin('Email/Password')">Create account</button>
+
+    <div class="bottom-link">
+      Already have an account? <a href="#">Sign in</a>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </div>
+
+  <script>
+    function fakeLogin(method) {
+      const email = document.getElementById("email")?.value;
+      localStorage.setItem("loginMethod", method);
+      if (email) {
+        localStorage.setItem("username", email);
+      }
+      window.location.href = "home.html";
+    }
+  </script>
 </body>
 </html>
