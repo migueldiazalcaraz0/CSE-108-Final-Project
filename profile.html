@@ -77,13 +77,25 @@
   <div class="container">
     <div class="sidebar">
       <i class="fab fa-twitter fa-2x" style="color: #1DA1F2;"></i>
-      <div class="nav-link" onclick="location.href='home.html'"><i class="fas fa-home"></i> Home</div>
-      <div class="nav-link" onclick="location.href='explore.html'"><i class="fas fa-hashtag"></i> Explore</div>
-      <div class="nav-link" onclick="location.href='notifications.html'"><i class="far fa-bell"></i> Notifications</div>
-      <div class="nav-link" onclick="location.href='messages.html'"><i class="far fa-envelope"></i> Messages</div>
-      <div class="nav-link" onclick="location.href='profile.html'"><i class="far fa-user"></i> Profile</div>
-      <div class="nav-link" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i> More</div>
-      <div class="nav-link" onclick="location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Log out</div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/home.html'">
+        <i class="fas fa-home"></i> Home
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/explore.html'">
+        <i class="fas fa-hashtag"></i> Explore
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/notifications.html'">
+        <i class="fas fa-bell"></i> Notifications
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/messages.html'">
+        <i class="fas fa-envelope"></i> Messages
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/profile.html'">
+        <i class="fas fa-user"></i> Profile
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/more.html'">
+        <i class="fas fa-ellipsis-h"></i> More
+      </div>
+      <div class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log out</div>
     </div>
 
     <div class="main">
@@ -104,5 +116,12 @@
       <div class="tweet">Tap in with EASA if you're East African at UCM 🇪🇹🇰🇪🇺🇬</div>
     </div>
   </div>
+  <script>
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'https://cse-108-final-project-1.onrender.com';
+    }
+  </script>
 </body>
 </html>

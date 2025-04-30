@@ -1,30 +1,28 @@
 const mongoose = require('mongoose');
 
-const tweetSchema = new mongoose.Schema({
-    text: {
+const TweetSchema = new mongoose.Schema({
+    content: {
         type: String,
         required: true,
-        trim: true
+        maxlength: 280
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    username: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    retweets: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     createdAt: {
         type: Date,
         default: Date.now
     }
 });
 
-const Tweet = mongoose.model('Tweet', tweetSchema);
-
-module.exports = Tweet; 
+module.exports = mongoose.model('Tweet', TweetSchema); 

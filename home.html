@@ -156,12 +156,24 @@
   <div class="container">
     <div class="sidebar">
       <i class="fab fa-twitter fa-2x" style="color: #1DA1F2;"></i>
-      <div class="nav-link" onclick="location.href='home.html'"><i class="fas fa-home"></i> Home</div>
-      <div class="nav-link" onclick="location.href='explore.html'"><i class="fas fa-hashtag"></i> Explore</div>
-      <div class="nav-link" onclick="location.href='notifications.html'"><i class="far fa-bell"></i> Notifications</div>
-      <div class="nav-link" onclick="location.href='messages.html'"><i class="far fa-envelope"></i> Messages</div>
-      <div class="nav-link" onclick="location.href='profile.html'"><i class="far fa-user"></i> Profile</div>
-      <div class="nav-link" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i> More</div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/home.html'">
+        <i class="fas fa-home"></i> Home
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/explore.html'">
+        <i class="fas fa-hashtag"></i> Explore
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/notifications.html'">
+        <i class="fas fa-bell"></i> Notifications
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/messages.html'">
+        <i class="fas fa-envelope"></i> Messages
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/profile.html'">
+        <i class="fas fa-user"></i> Profile
+      </div>
+      <div class="nav-link" onclick="window.location.href='https://cse-108-final-project-1.onrender.com/Pages/more.html'">
+        <i class="fas fa-ellipsis-h"></i> More
+      </div>
       <div class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log out</div>
     </div>
 
@@ -178,7 +190,7 @@
       <h3>Welcome to Fake Twitter</h3>
       <div class="username" id="userInfo"></div>
       <div class="widget" style="margin-top: 40px;">
-        <h4>What’s happening</h4>
+        <h4>What's happening</h4>
         <p><strong>#Playboi Carti</strong> — 8,500+ posts</p>
         <p><strong>#NBA</strong> — Trending</p>
         <p><strong>#AI Tools</strong> — Tech</p>
@@ -187,54 +199,106 @@
   </div>
 
   <script>
-    function postTweet() {
+    async function postTweet() {
       const input = document.getElementById("tweetInput");
       const content = input.value.trim();
       if (!content) return;
 
-      let tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
-      tweets.unshift({ text: content, time: new Date().toLocaleString() });
-      localStorage.setItem("tweets", JSON.stringify(tweets));
-      input.value = "";
-      showTweets();
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://cse-108-final-project-1.onrender.com/api/tweets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ content })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to post tweet');
+        }
+
+        input.value = "";
+        showTweets();
+      } catch (error) {
+        console.error('Error posting tweet:', error);
+        alert('Failed to post tweet. Please try again.');
+      }
     }
 
-    function showTweets() {
-      const container = document.getElementById("feedContainer");
-      const tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
+    async function showTweets() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://cse-108-final-project-1.onrender.com/api/tweets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-      container.innerHTML = tweets.map((t, index) => `
-        <div class="tweet">
-          <div class="avatar"></div>
-          <div class="tweet-content">
-            <div><span class="name">User</span> <span class="username">@you</span></div>
-            <div class="time">${t.time}</div>
-            <p>${t.text}</p>
-            <button class="delete-btn" onclick="deleteTweet(${index})">Delete</button>
+        if (!response.ok) {
+          throw new Error('Failed to fetch tweets');
+        }
+
+        const tweets = await response.json();
+        const container = document.getElementById("feedContainer");
+
+        container.innerHTML = tweets.map(t => `
+          <div class="tweet">
+            <div class="avatar"></div>
+            <div class="tweet-content">
+              <div><span class="name">${t.user.name || 'User'}</span> <span class="username">@${t.user.username || 'you'}</span></div>
+              <div class="time">${new Date(t.createdAt).toLocaleString()}</div>
+              <p>${t.content}</p>
+              ${t.user._id === JSON.parse(localStorage.getItem('user')).id 
+                ? `<button class="delete-btn" onclick="deleteTweet('${t._id}')">Delete</button>`
+                : ''}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      } catch (error) {
+        console.error('Error fetching tweets:', error);
+        container.innerHTML = '<p>Failed to load tweets. Please refresh the page.</p>';
+      }
     }
 
-    function deleteTweet(index) {
-      let tweets = JSON.parse(localStorage.getItem("tweets") || "[]");
-      tweets.splice(index, 1);
-      localStorage.setItem("tweets", JSON.stringify(tweets));
-      showTweets();
+    async function deleteTweet(tweetId) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`https://cse-108-final-project-1.onrender.com/api/tweets/${tweetId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete tweet');
+        }
+
+        showTweets();
+      } catch (error) {
+        console.error('Error deleting tweet:', error);
+        alert('Failed to delete tweet. Please try again.');
+      }
     }
 
     function showUser() {
-      const user = localStorage.getItem("username") || "Anonymous";
-      const method = localStorage.getItem("loginMethod") || "guest";
-      document.getElementById("userInfo").innerText = `${user} (signed in via ${method})`;
+      const user = JSON.parse(localStorage.getItem('user'));
+      document.getElementById("userInfo").innerText = user ? `${user.name} (@${user.username})` : 'Anonymous';
     }
 
     function logout() {
       localStorage.clear();
-      window.location.href = "index.html";
+      window.location.href = 'https://cse-108-final-project-1.onrender.com';
     }
 
     window.onload = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'https://cse-108-final-project-1.onrender.com';
+        return;
+      }
       showTweets();
       showUser();
     };
