@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>More - Fake Twitter</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      width: 1200px;
+    }
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      border-right: 1px solid #333;
+      height: 100vh;
+    }
+    .sidebar .nav-link {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      padding: 12px 0;
+      cursor: pointer;
+    }
+    .sidebar i {
+      margin-right: 10px;
+    }
+    .main {
+      flex: 1;
+      padding: 20px;
+    }
+    .setting-card {
+      background-color: #111;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .setting-card:hover {
+      background-color: #222;
+    }
+    .setting-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .setting-desc {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <i class="fab fa-twitter fa-2x" style="color: #1DA1F2;"></i>
+      <div class="nav-link" onclick="location.href='home.html'"><i class="fas fa-home"></i> Home</div>
+      <div class="nav-link" onclick="location.href='explore.html'"><i class="fas fa-hashtag"></i> Explore</div>
+      <div class="nav-link" onclick="location.href='notifications.html'"><i class="far fa-bell"></i> Notifications</div>
+      <div class="nav-link" onclick="location.href='messages.html'"><i class="far fa-envelope"></i> Messages</div>
+      <div class="nav-link" onclick="location.href='profile.html'"><i class="far fa-user"></i> Profile</div>
+      <div class="nav-link" onclick="location.href='more.html'"><i class="fas fa-ellipsis-h"></i> More</div>
+      <div class="nav-link" onclick="location.href='index.html'"><i class="fas fa-sign-out-alt"></i> Log out</div>
+    </div>
+
+    <div class="main">
+      <h2>More</h2>
+      <div class="setting-card">
+        <div class="setting-title">Settings & Privacy</div>
+        <div class="setting-desc">Manage your account and privacy settings.</div>
+      </div>
+      <div class="setting-card">
+        <div class="setting-title">Help Center</div>
+        <div class="setting-desc">Read FAQs and get support for your account.</div>
+      </div>
+      <div class="setting-card">
+        <div class="setting-title">About Fake Twitter</div>
+        <div class="setting-desc">Learn more about this project and its creators.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

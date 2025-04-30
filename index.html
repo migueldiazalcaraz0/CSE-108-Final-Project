@@ -31,7 +31,7 @@
             font-weight: bold;
             margin-bottom: 2rem;
         }
-        .signup-form {
+        .auth-form {
             background-color: #fff;
             padding: 2rem;
             border-radius: 1rem;
@@ -63,9 +63,12 @@
             border-radius: 0.5rem;
             padding: 0.75rem;
         }
-        .terms {
-            font-size: 0.8rem;
-            color: #536471;
+        .alert {
+            display: none;
+            margin-top: 1rem;
+        }
+        .form-switch {
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -78,36 +81,155 @@
                 <h2 class="hero-subtext">Join today.</h2>
             </div>
             <div class="col-md-6">
-                <div class="signup-form">
-                    <h3 class="mb-4">Sign in to Twitter</h3>
-                    <form>
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email">
+                <div class="auth-form">
+                    <div id="loginForm">
+                        <h3 class="mb-4">Sign in to Twitter</h3>
+                        <div class="alert alert-danger" id="loginError"></div>
+                        <form id="loginFormElement">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-twitter w-100 mb-3">Sign in</button>
+                            <div class="text-center mb-3">
+                                <span>or</span>
+                            </div>
+                            <button type="button" class="btn btn-outline-twitter w-100 mb-3">
+                                <i class="fab fa-google me-2"></i>Sign in with Google
+                            </button>
+                            <button type="button" class="btn btn-outline-twitter w-100 mb-3">
+                                <i class="fab fa-apple me-2"></i>Sign in with Apple
+                            </button>
+                            <div class="text-center">
+                                <a href="#" class="text-decoration-none">Forgot password?</a>
+                            </div>
+                        </form>
+                        <div class="mt-4">
+                            <p class="mb-0">Don't have an account? <a href="#" id="showRegister">Sign up</a></p>
                         </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Password">
+                    </div>
+
+                    <div id="registerForm" style="display: none;">
+                        <h3 class="mb-4">Create your account</h3>
+                        <div class="alert alert-danger" id="registerError"></div>
+                        <form id="registerFormElement">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="registerName" placeholder="Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="registerUsername" placeholder="Username" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" id="registerEmail" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" id="registerPassword" placeholder="Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-twitter w-100 mb-3">Sign up</button>
+                        </form>
+                        <div class="mt-4">
+                            <p class="mb-0">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
                         </div>
-                        <button type="submit" class="btn btn-twitter w-100 mb-3">Sign in</button>
-                        <div class="text-center mb-3">
-                            <span>or</span>
-                        </div>
-                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
-                            <i class="fab fa-google me-2"></i>Sign in with Google
-                        </button>
-                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
-                            <i class="fab fa-apple me-2"></i>Sign in with Apple
-                        </button>
-                        <div class="text-center">
-                            <a href="#" class="text-decoration-none">Forgot password?</a>
-                        </div>
-                    </form>
-                    <div class="mt-4">
-                        <p class="mb-0">Don't have an account? <a href="#" class="text-decoration-none">Sign up</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Form switching
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        // Login form submission
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorElement = document.getElementById('loginError');
+
+            try {
+                const response = await fetch('http://localhost:5001/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password }),
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Login failed');
+                }
+
+                const data = await response.json();
+
+                // Store the token
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                // Redirect to home page or dashboard
+                window.location.href = '/Pages/home.html';
+            } catch (error) {
+                console.error('Login error:', error);
+                errorElement.textContent = error.message || 'Failed to connect to server';
+                errorElement.style.display = 'block';
+            }
+        });
+
+        // Register form submission
+        document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorElement = document.getElementById('registerError');
+
+            try {
+                const response = await fetch('http://localhost:5001/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ name, username, email, password }),
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Registration failed');
+                }
+
+                const data = await response.json();
+
+                // Store the token
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                // Redirect to home page or dashboard
+                window.location.href = '/Pages/home.html';
+            } catch (error) {
+                console.error('Registration error:', error);
+                errorElement.textContent = error.message || 'Failed to connect to server';
+                errorElement.style.display = 'block';
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
