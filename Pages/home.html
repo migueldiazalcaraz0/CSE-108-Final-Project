@@ -197,7 +197,7 @@
       if (!user) return;
 
       try {
-        const response = await fetch('http://localhost:5001/api/tweets', {
+        const response = await fetch('https://cse-108-final-project-sox5.onrender.com/api/tweets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -223,7 +223,7 @@
 
     async function showTweets() {
       try {
-        const response = await fetch('http://localhost:5001/api/tweets');
+        const response = await fetch('https://cse-108-final-project-sox5.onrender.com/api/tweets');
         const tweets = await response.json();
         
         const container = document.getElementById("feedContainer");
