@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .twitter-logo {
+            font-size: 2.5rem;
+            color: #1DA1F2;
+        }
+        .hero-text {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 2rem 0;
+        }
+        .hero-subtext {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+        .signup-form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            color: #000;
+        }
+        .btn-twitter {
+            background-color: #1DA1F2;
+            color: white;
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: bold;
+        }
+        .btn-twitter:hover {
+            background-color: #1a8cd8;
+            color: white;
+        }
+        .btn-outline-twitter {
+            border: 1px solid #1DA1F2;
+            color: #1DA1F2;
+            border-radius: 2rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: bold;
+        }
+        .btn-outline-twitter:hover {
+            background-color: #1a8cd8;
+            color: white;
+        }
+        .form-control {
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+        .terms {
+            font-size: 0.8rem;
+            color: #536471;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row hero-section">
+            <div class="col-md-6">
+                <i class="fab fa-twitter twitter-logo"></i>
+                <h1 class="hero-text">Happening now</h1>
+                <h2 class="hero-subtext">Join today.</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="signup-form">
+                    <h3 class="mb-4">Sign in to Twitter</h3>
+                    <form>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-twitter w-100 mb-3">Sign in</button>
+                        <div class="text-center mb-3">
+                            <span>or</span>
+                        </div>
+                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
+                            <i class="fab fa-google me-2"></i>Sign in with Google
+                        </button>
+                        <button type="button" class="btn btn-outline-twitter w-100 mb-3">
+                            <i class="fab fa-apple me-2"></i>Sign in with Apple
+                        </button>
+                        <div class="text-center">
+                            <a href="#" class="text-decoration-none">Forgot password?</a>
+                        </div>
+                    </form>
+                    <div class="mt-4">
+                        <p class="mb-0">Don't have an account? <a href="#" class="text-decoration-none">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
