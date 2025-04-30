@@ -14,7 +14,6 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://your-connection-string', {
@@ -24,12 +23,15 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://your-connection-strin
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tweets', tweetRoutes);
 
 // Serve static files
-app.get('/', (req, res) => {
+app.use(express.static(path.join(__dirname)));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
