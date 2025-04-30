@@ -35,7 +35,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://your-connection-strin
   console.error('MongoDB URI:', process.env.MONGODB_URI);
 });
 
-// API Routes - with debug logging
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tweets', tweetRoutes);
 
@@ -44,13 +44,13 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working' });
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname)));
+// Serve static files from parent directory
+app.use(express.static(path.join(__dirname, '..')));
 
-// Handle React routing, return all requests to React app
+// Handle all routes by serving index.html
 app.get('*', (req, res) => {
   console.log('Serving index.html for path:', req.path);
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 // Error handling middleware
@@ -63,6 +63,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log('Current directory:', __dirname);
+  console.log('Static files directory:', path.join(__dirname, '..'));
   console.log('Available routes:');
   console.log('- /api/auth/*');
   console.log('- /api/tweets/*');
