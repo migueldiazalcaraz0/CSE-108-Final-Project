@@ -9,9 +9,15 @@ module.exports = function(req, res, next) {
     return res.status(401).json({ message: 'No token, authorization denied' });
   }
 
+  // Check if JWT_SECRET is set
+  if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET is not set in environment variables');
+    return res.status(500).json({ message: 'Server configuration error' });
+  }
+
   try {
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {

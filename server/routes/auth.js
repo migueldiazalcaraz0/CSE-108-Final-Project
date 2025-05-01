@@ -7,11 +7,13 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
+    console.log('Register request received:', { body: req.body });
     const { name, username, email, password } = req.body;
 
     // Check if user exists
     let user = await User.findOne({ email });
     if (user) {
+      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -29,14 +31,21 @@ router.post('/register', async (req, res) => {
 
     // Save user
     await user.save();
+    console.log('New user created:', { id: user._id, email: user.email });
 
     // Create JWT token
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set in environment variables');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
+    console.log('Token generated for user:', user._id);
     res.json({
       token,
       user: {
@@ -47,35 +56,44 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Registration error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
 // Login
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login request received:', { email: req.body.email });
     const { email, password } = req.body;
 
     // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Invalid password for user:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Create JWT token
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set in environment variables');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
+    console.log('Login successful for user:', user._id);
     res.json({
       token,
       user: {
@@ -86,8 +104,8 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
