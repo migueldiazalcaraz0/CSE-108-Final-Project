@@ -22,17 +22,18 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://daizmiguel76:<Miguel>@cluster0.7nmuvoj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+const MONGODB_URI = 'mongodb+srv://daizmiguel76:Miguel@cluster0.7nmuvoj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => {
   console.log('Connected to MongoDB');
-  console.log('MongoDB URI:', process.env.MONGODB_URI);
+  console.log('MongoDB URI:', MONGODB_URI);
 })
 .catch(err => {
   console.error('MongoDB connection error:', err);
-  console.error('MongoDB URI:', process.env.MONGODB_URI);
+  console.error('MongoDB URI:', MONGODB_URI);
 });
 
 // API Routes
