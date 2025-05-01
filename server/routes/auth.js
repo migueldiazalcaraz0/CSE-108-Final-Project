@@ -7,8 +7,15 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    console.log('Register request received:', { body: req.body });
+    console.log('Register request received:', req.body);
+    
     const { name, username, email, password } = req.body;
+
+    // Validate input
+    if (!name || !username || !email || !password) {
+      console.log('Missing required fields:', { name, username, email, password: !!password });
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     // Check if user exists
     let user = await User.findOne({ email });
@@ -34,18 +41,12 @@ router.post('/register', async (req, res) => {
     console.log('New user created:', { id: user._id, email: user.email });
 
     // Create JWT token
-    if (!process.env.JWT_SECRET) {
-      console.error('JWT_SECRET is not set in environment variables');
-      return res.status(500).json({ message: 'Server configuration error' });
-    }
-
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'default-secret-key',
       { expiresIn: '1h' }
     );
 
-    console.log('Token generated for user:', user._id);
     res.json({
       token,
       user: {
@@ -65,7 +66,14 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     console.log('Login request received:', { email: req.body.email });
+    
     const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      console.log('Missing required fields:', { email: !!email, password: !!password });
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
 
     // Check if user exists
     const user = await User.findOne({ email });
@@ -82,14 +90,9 @@ router.post('/login', async (req, res) => {
     }
 
     // Create JWT token
-    if (!process.env.JWT_SECRET) {
-      console.error('JWT_SECRET is not set in environment variables');
-      return res.status(500).json({ message: 'Server configuration error' });
-    }
-
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'default-secret-key',
       { expiresIn: '1h' }
     );
 

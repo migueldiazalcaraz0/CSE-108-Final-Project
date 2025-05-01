@@ -14,50 +14,45 @@ const app = express();
 // Debug: Log when server starts
 console.log('Server starting up...');
 
-// Enhanced debug logging middleware - log all requests
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  console.log('Headers:', JSON.stringify(req.headers, null, 2));
-  next();
-});
-
-// CORS configuration
+// Simple CORS configuration
 app.use(cors({
-  origin: ['https://cse-108-final-project-1.onrender.com', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true
+  origin: '*',  // Allow all origins temporarily for debugging
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Add CORS headers manually as backup
+// Request logging middleware
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://cse-108-final-project-1.onrender.com');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  // Handle OPTIONS method
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
+  console.log('--------------------');
+  console.log('New Request:');
+  console.log('Time:', new Date().toISOString());
+  console.log('Method:', req.method);
+  console.log('Path:', req.path);
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  console.log('Query:', req.query);
+  console.log('--------------------');
   next();
 });
 
 app.use(express.json());
 
-// Basic root route
+// Test route to verify server is working
 app.get('/', (req, res) => {
-  res.json({ message: 'Server is running' });
+  res.json({ 
+    message: 'Server is running',
+    time: new Date().toISOString()
+  });
 });
 
-// Health check endpoint - moved before other routes
+// Health check endpoint
 app.get('/health', (req, res) => {
-  console.log('Health check endpoint hit');
   res.json({
     status: 'ok',
-    timestamp: new Date().toISOString(),
-    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    environment: process.env.NODE_ENV || 'development'
+    time: new Date().toISOString(),
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
   });
 });
 
@@ -79,33 +74,13 @@ mongoose.connect(MONGODB_URI, {
 app.use('/api/auth', authRoutes);
 app.use('/api/tweets', tweetRoutes);
 
-// Test endpoint
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working' });
-});
-
-// Catch-all route handler
-app.use('*', (req, res) => {
-  console.log(`404 - Route not found: ${req.originalUrl}`);
-  res.status(404).json({ 
-    error: 'Not Found',
-    message: `Route ${req.originalUrl} not found`,
-    availableRoutes: [
-      '/',
-      '/health',
-      '/api/auth/*',
-      '/api/tweets/*',
-      '/api/test'
-    ]
-  });
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
+  console.error('Error occurred:', err);
   res.status(500).json({ 
     error: 'Internal Server Error',
-    message: err.message 
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
 
@@ -117,5 +92,4 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log('- /health');
   console.log('- /api/auth/*');
   console.log('- /api/tweets/*');
-  console.log('- /api/test');
 }); 
